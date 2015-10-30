@@ -2,6 +2,9 @@
 // <copyright file="MainWindow.xaml.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
+// Modificado por:
+// Ruben Peralta Diaz
+// Enrique Garcia Gonzalez
 //------------------------------------------------------------------------------
 
 namespace Microsoft.Samples.Kinect.SkeletonBasics
