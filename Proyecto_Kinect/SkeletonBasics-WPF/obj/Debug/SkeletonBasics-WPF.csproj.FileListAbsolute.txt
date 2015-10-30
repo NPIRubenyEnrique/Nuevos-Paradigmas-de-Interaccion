@@ -10,3 +10,15 @@ C:\Users\Ruben\Universidad\Cuarto\NPI\Practicas\SkeletonBasics-WPF\obj\Debug\Mic
 C:\Users\Ruben\Universidad\Cuarto\NPI\Practicas\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csproj.GenerateResource.Cache
 C:\Users\Ruben\Universidad\Cuarto\NPI\Practicas\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.exe
 C:\Users\Ruben\Universidad\Cuarto\NPI\Practicas\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.pdb
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.exe
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.pdb
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\bin\Debug\SkeletonBasics-WPF.exe
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\bin\Debug\SkeletonBasics-WPF.pdb
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csprojResolveAssemblyReference.cache
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\MainWindow.baml
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\MainWindow.g.cs
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\App.g.cs
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF_MarkupCompile.cache
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.g.resources
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\Microsoft.Samples.Kinect.SkeletonBasics.Properties.Resources.resources
+C:\Users\Ruben\Documents\GitHub\Nuevos-Paradigmas-de-Interaccion\Proyecto_Kinect\SkeletonBasics-WPF\obj\Debug\SkeletonBasics-WPF.csproj.GenerateResource.Cache

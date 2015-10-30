@@ -17,19 +17,19 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Struct para almacenar un punto 3D necesario tras pisar accidentalmente el original
-        public struct Vector3D
-        {
-            public double X, Y, Z;
-        }
-
         // Valor que controlara el color de fondo activo
+        // Será la posición del vector de fondos que estará activo
         private int fondo = 0;
 
+        // Vector para almacenar los distintos fondos disponibles
         SolidColorBrush[] colores = new SolidColorBrush[7];
 
+        // Variable que controla si hemos tocado la vola de la posición inicial
         private bool inicioReconocido = false;
 
+
+        // Variables predeterminadas del ejemplo de skeleton basics
+        // Para controlar los distintos parametros del programa: sensor, dimension de la pantalla...
         /// <summary>
         /// Width of output drawing
         /// </summary>
@@ -100,14 +100,14 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// </summary>
         public MainWindow()
         {
-            
-                colores[0] = Brushes.Gray;
-                colores[1] = Brushes.LightCoral;
-                colores[2] = Brushes.LightSalmon;
-                colores[3] = Brushes.MediumPurple;
-                colores[4] = Brushes.Olive;
-                colores[5] = Brushes.Orange;
-                colores[6] = Brushes.Black;
+            // Inicializacion de los distintos colores del fondo
+            colores[0] = Brushes.Gray;
+            colores[1] = Brushes.LightCoral;
+            colores[2] = Brushes.LightSalmon;
+            colores[3] = Brushes.MediumPurple;
+            colores[4] = Brushes.Olive;
+            colores[5] = Brushes.Orange;
+            colores[6] = Brushes.Black;
             InitializeComponent();
         }
 
@@ -221,11 +221,13 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// <summary>
         /// Funcion para comprobar si se ha tocado la bola de inico (posicion inicial)
         /// </summary>
-        private bool tocaBola(Point manoDer, Point bola)
+        /// <param name="bola">Posicion de la bola que pretende ser tocada</param>
+        /// <param name="manoDer">Posicion de la mano que toca la bola</param>
+        private bool tocaBola(Point mano, Point bola)
         {
             bool toca = false;
-            if (Math.Abs(manoDer.X-bola.X)<20.0f)
-                if (Math.Abs(manoDer.Y-bola.Y)<20.0f)
+            if (Math.Abs(mano.X-bola.X)<20.0f)
+                if (Math.Abs(mano.Y-bola.Y)<20.0f)
                     toca = true;
             return toca;
         }
@@ -238,10 +240,12 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         private void SensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             Skeleton[] skeletons = new Skeleton[0];
+
+            // Puntos en los que se dibujaran las distintas bolas del programa
             Point puntoPosInicial, puntoNextBG, puntoPrevBG;
-            puntoPosInicial = new Point(500.0, 200.0);
-            puntoNextBG = new Point(480.0, 100.0);
-            puntoPrevBG = new Point(450.0, 300.0);
+            puntoPosInicial = new Point(500.0, 200.0);  // Bola para activar poder cambiar el fondo
+            puntoNextBG = new Point(480.0, 100.0);      // Bola para pasar al siguiente fondo
+            puntoPrevBG = new Point(450.0, 300.0);      // Bola para volver al fondo anterior
 
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
             {
@@ -269,83 +273,51 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
-
+                            // Funcion que dibuja el skeleton
                             this.DrawBonesAndJoints(skel, dc);
-                            dc.DrawEllipse(Brushes.Beige, null, SkeletonPointToScreen(skel.Joints[JointType.Head].Position), 30.0, 35.0);
-                            dc.DrawEllipse(Brushes.Red, null, puntoPosInicial, 25.0, 25.0);
-                            dc.DrawEllipse(Brushes.Yellow, null, puntoNextBG, 25.0, 25.0);
-                            dc.DrawEllipse(Brushes.Yellow, null, puntoPrevBG, 25.0, 25.0);
 
-                            // Reconocer la posición del cuerpo:
-                            /*Vector3D manoDerecha = new Vector3D();
-                            manoDerecha.X = skel.Joints[JointType.HandRight].Position.X;
-                            manoDerecha.Y = skel.Joints[JointType.HandRight].Position.Y;
-                            manoDerecha.Z = skel.Joints[JointType.HandRight].Position.Z;*/
+                            // Dibujamos una cabeza al skeleton
+                            dc.DrawEllipse(Brushes.Beige, null, SkeletonPointToScreen(skel.Joints[JointType.Head].Position), 30.0, 35.0);
+                            
+                            // Bolas a tocar para el funcionamiento del programa
+                            dc.DrawEllipse(Brushes.Red, null, puntoPosInicial, 20.0, 20.0);
+                            dc.DrawEllipse(Brushes.Yellow, null, puntoNextBG, 20.0, 20.0);
+                            dc.DrawEllipse(Brushes.Yellow, null, puntoPrevBG, 20.0, 20.0);
+                            
+                            
+                            /*Para dibujar en un punto referente a un punto del skeleton tendriamos que
+                            hacer algo como el siguiente ejemplo
+                            
+                            Point cabeza = new Point();
+                            cabeza = SkeletonPointToScreen(skel.Joints[JointType.Head].Position);
+                            cabeza.X += 100;
+                            dc.DrawEllipse(Brushes.Beige, null, cabeza, 30.0, 35.0);
+                            */
+
+                            // Reconocer la posición de la mano mas cercana a las bolas
                             Point manoDerecha = new Point();
                             manoDerecha = SkeletonPointToScreen(skel.Joints[JointType.HandRight].Position);
 
-                            Vector3D manoIzquierda = new Vector3D();
-                            manoIzquierda.X = skel.Joints[JointType.HandLeft].Position.X;
-                            manoIzquierda.Y = skel.Joints[JointType.HandLeft].Position.Y;
-                            manoIzquierda.Z = skel.Joints[JointType.HandLeft].Position.Z;
-
-                            Vector3D codoDerecho = new Vector3D();
-                            codoDerecho.X = skel.Joints[JointType.ElbowRight].Position.X;
-                            codoDerecho.Y = skel.Joints[JointType.ElbowRight].Position.Y;
-                            codoDerecho.Z = skel.Joints[JointType.ElbowRight].Position.Z;
-
-                            Vector3D codoIzquierdo = new Vector3D();
-                            codoIzquierdo.X = skel.Joints[JointType.ElbowLeft].Position.X;
-                            codoIzquierdo.Y = skel.Joints[JointType.ElbowLeft].Position.Y;
-                            codoIzquierdo.Z = skel.Joints[JointType.ElbowLeft].Position.Z;
-
-                            Vector3D rodillaDerecha = new Vector3D();
-                            rodillaDerecha.X = skel.Joints[JointType.KneeRight].Position.X;
-                            rodillaDerecha.Y = skel.Joints[JointType.KneeRight].Position.Y;
-                            rodillaDerecha.Z = skel.Joints[JointType.KneeRight].Position.Z;
-
-                            Vector3D rodillaIzquierda = new Vector3D();
-                            rodillaIzquierda.X = skel.Joints[JointType.KneeLeft].Position.X;
-                            rodillaIzquierda.Y = skel.Joints[JointType.KneeLeft].Position.Y;
-                            rodillaIzquierda.Z = skel.Joints[JointType.KneeLeft].Position.Z;
-
-                            Vector3D pieDerecho = new Vector3D();
-                            pieDerecho.X = skel.Joints[JointType.FootRight].Position.X;
-                            pieDerecho.Y = skel.Joints[JointType.FootRight].Position.Y;
-                            pieDerecho.Z = skel.Joints[JointType.FootRight].Position.Z;
-
-                            Vector3D pieIzquierdo = new Vector3D();
-                            pieIzquierdo.X = skel.Joints[JointType.FootLeft].Position.X;
-                            pieIzquierdo.Y = skel.Joints[JointType.FootLeft].Position.Y;
-                            pieIzquierdo.Z = skel.Joints[JointType.FootLeft].Position.Z;
-
-                            Vector3D hombroDerecho = new Vector3D();
-                            hombroDerecho.X = skel.Joints[JointType.ShoulderRight].Position.X;
-                            hombroDerecho.Y = skel.Joints[JointType.ShoulderRight].Position.Y;
-                            hombroDerecho.Z = skel.Joints[JointType.ShoulderRight].Position.Z;
-
-                            Vector3D hombroIzquierdo = new Vector3D();
-                            hombroIzquierdo.X = skel.Joints[JointType.ShoulderLeft].Position.X;
-                            hombroIzquierdo.Y = skel.Joints[JointType.ShoulderLeft].Position.Y;
-                            hombroIzquierdo.Z = skel.Joints[JointType.ShoulderLeft].Position.Z;
-
+                            // Comprobamos si la mano toca alguna de las bolas
                             if (tocaBola(manoDerecha, puntoPosInicial))
                             {
-                                dc.DrawEllipse(Brushes.LightGreen, null, puntoPosInicial, 25.0, 25.0);
+                                dc.DrawEllipse(Brushes.LightGreen, null, puntoPosInicial, 20.0, 20.0);
                                 dc.DrawEllipse(Brushes.LightGreen, null, SkeletonPointToScreen(skel.Joints[JointType.Head].Position), 30.0, 35.0);
                                 inicioReconocido = true;
                             }
+                            // Solo en el caso de que la última bola que se ha tocado es la central, podemos cambiar de fondo
                             if (inicioReconocido && tocaBola(manoDerecha, puntoNextBG))
                             {
                                 fondo = (fondo + 1) % 7;
-                                dc.DrawEllipse(Brushes.LightGreen, null, puntoNextBG, 25.0, 25.0);
+                                dc.DrawEllipse(Brushes.LightGreen, null, puntoNextBG, 20.0, 20.0);
                                 dc.DrawRectangle(colores[fondo], null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
                                 inicioReconocido = false;
                             }
                             if (inicioReconocido && tocaBola(manoDerecha, puntoPrevBG))
                             {
-                                fondo = (fondo - 1) % 7;
-                                dc.DrawEllipse(Brushes.LightGreen, null, puntoPrevBG, 25.0, 25.0);
+                                if (fondo == 0) fondo = 6;
+                                else fondo = (fondo - 1) % 7;
+                                dc.DrawEllipse(Brushes.LightGreen, null, puntoPrevBG, 20.0, 20.0);
                                 dc.DrawRectangle(colores[fondo], null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
                                 inicioReconocido = false;
                             }
